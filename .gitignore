@@ -1,0 +1,20 @@
+# MuJoCo
+*.mjb
+MUJOCO_LOG.TXT
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# SolidWorks
+*.SLDPRT
+*.SLDASM
+*.SLDDRW
+~$*
+
+# OS / editor
+desktop.ini
+Thumbs.db
+.vscode/

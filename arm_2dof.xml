@@ -1,0 +1,80 @@
+<mujoco model="arm_2dof">
+
+  <compiler angle="degree" meshdir="meshes" autolimits="true"/>
+
+  <option gravity="0 0 -9.81" timestep="0.002" integrator="implicitfast"/>
+
+  <default>
+    <geom type="mesh" contype="1" conaffinity="1" condim="3"
+          rgba="0.72 0.72 0.75 1" friction="0.6 0.005 0.0001"/>
+    <joint type="hinge" axis="0 1 0" limited="true"
+           damping="1.0" armature="0.01"/>
+    <position kp="30" kv="3" forcerange="-50 50"/>
+  </default>
+
+  <asset>
+
+    <mesh name="arm1_mesh"    file="arm1.stl"    scale="0.001 0.001 0.001"/>
+    <mesh name="arm2_mesh"    file="arm2.stl"    scale="0.001 0.001 0.001"/>
+
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.2 0.22 0.25" rgb2="0.28 0.30 0.33"/>
+    <material name="grid_mat" texture="grid" texrepeat="8 8" reflectance="0.1"/>
+  </asset>
+
+  <worldbody>
+
+    <light name="top"  pos="0 0 2.5"      dir="0 0 -1"   diffuse="0.8 0.8 0.8"/>
+    <light name="side" pos="1.5 -1.5 1.5" dir="-1 1 -1"  diffuse="0.4 0.4 0.4"/>
+
+    <geom name="floor" type="plane" pos="0 0 -0.030" size="2 2 0.1"
+          material="grid_mat" contype="1" conaffinity="1"/>
+
+    <body name="base" pos="0 0 0">
+      <geom name="slab_geom" type="box"
+            size="0.14420 0.100 0.015" pos="-0.00416 0 -0.015"
+            mass="1.55952" rgba="0.55 0.56 0.60 1"/>
+      <geom name="bracket_geom" type="box"
+            size="0.020 0.015 0.018" pos="0 0 0.018"
+            mass="0.04235" rgba="0.65 0.66 0.70 1"
+            contype="0" conaffinity="0"/>
+
+      <body name="arm1" pos="0 0 0.03607">
+        <joint name="joint1" range="-173.9 6.5"/>
+        <geom name="arm1_geom" mesh="arm1_mesh"
+              euler="0 -90 0"
+              pos="-0.19512 0 0.06199"
+              mass="0.16913"/>
+
+        <body name="arm2" pos="0.180 -0.020 0">
+          <joint name="joint2" range="0 170"/>
+          <geom name="arm2_geom" mesh="arm2_mesh"
+                euler="0 -90 0"
+                pos="0 0.010 0"
+                mass="0.13139"/>
+          <site name="tip" pos="0.150 0 0" size="0.008" rgba="1 0.3 0.1 1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <contact>
+    <pair geom1="arm1_geom" geom2="slab_geom"    condim="3"/>
+    <pair geom1="arm2_geom" geom2="slab_geom"    condim="3"/>
+  </contact>
+
+  <actuator>
+    <position name="act1" joint="joint1" ctrlrange="-3.03514 0.11345" kp="30"/>
+    <position name="act2" joint="joint2" ctrlrange="0 2.96706"     kp="20"/>
+  </actuator>
+
+  <keyframe>
+    <key name="home" qpos="0 0.05236" ctrl="0 0.05236"/>
+  </keyframe>
+
+  <sensor>
+    <jointpos name="j1_pos" joint="joint1"/>
+    <jointpos name="j2_pos" joint="joint2"/>
+  </sensor>
+
+</mujoco>
