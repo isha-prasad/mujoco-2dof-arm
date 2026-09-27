@@ -63,7 +63,7 @@ Tested with MuJoCo 3.11.0 and Python 3.13.5 on Windows.
 
 - **Arm1 and Arm2 interpenetrate at the elbow.** Arm2 sits in (nearly) the same plane as Arm1 instead of beside it along the bolt axis. MuJoCo excludes parent–child contacts by default, so the overlap isn't detected. The joint1 limits (Arm1 vs slab corners) are unaffected; the joint2 fold limit will be re-derived after the fix. Tracked in [Issue #1](https://github.com/isha-prasad/mujoco-2dof-arm/issues/1).
 
-## Gotcha worth knowing
+## A thing to watch out for
 
 `<compiler angle="degree"/>` converts joint `range` to radians, but **not** actuator `ctrlrange` or keyframe `qpos`. Those are always in radians.
 
